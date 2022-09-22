@@ -1,5 +1,5 @@
-import React from 'react'
-import { render, RenderResult, fireEvent } from '@testing-library/react'
+import React from 'react';
+import { render, RenderResult, fireEvent } from '@testing-library/react';
 import Menu, { MenuProps } from './menu'
 import MenuItem from './menuItem'
 
@@ -10,9 +10,8 @@ const testProps: MenuProps = {
 }
 const testVerProps: MenuProps = {
   defaultIndex: 0,
-  mode: 'vertical'
+  mode: 'vertical',
 }
-//准备测试组件
 const generateMenu = (props: MenuProps) => {
   return (
     <Menu {...props}>
@@ -25,27 +24,39 @@ const generateMenu = (props: MenuProps) => {
       <MenuItem index={2}>
         xyz
       </MenuItem>
+      {/* <SubMenu title="dropdown">
+        <MenuItem>
+          drop1
+        </MenuItem>
+      </SubMenu>
+      <SubMenu title="opened">
+        <MenuItem>
+          opened1
+        </MenuItem>
+      </SubMenu> */}
     </Menu>
   )
 }
-//外侧创建一些变量
-let wrapper: RenderResult, menuElement: HTMLElement, activeElement: HTMLElement, disabledElement: HTMLElement
-describe('test Menu and MenuItem component in default(horizontal) mode', () => {
-  //通用的逻辑放在beforeEach中
+
+//设计case
+//定义声明属性
+let wrapper: RenderResult, wrapper2: RenderResult, menuElement: HTMLElement, activeElement: HTMLElement, disabledElement: HTMLElement
+describe('test Menu and MenuItem component', () => {
+  //使用beforeEach钩子
   beforeEach(() => {
     wrapper = render(generateMenu(testProps))
-    // wrapper.container.append(createStyleFile())
-    menuElement = wrapper.getByTestId('test-menu')//测试提供test-id(data-test)
+    menuElement = wrapper.getByTestId('test-menu')//取到元素
     activeElement = wrapper.getByText('active')
     disabledElement = wrapper.getByText('disabled')
   })
   it('should render correct Menu and MenuItem based on default props', () => {
     expect(menuElement).toBeInTheDocument()
     expect(menuElement).toHaveClass('viking-menu test')
-    expect(menuElement.querySelectorAll(':scope > li').length).toEqual(5)
+    expect(menuElement.querySelectorAll(':scope > li').length).toEqual(5)//判断子元素item包含几个
     expect(activeElement).toHaveClass('menu-item is-active')
     expect(disabledElement).toHaveClass('menu-item is-disabled')
   })
+  //测试行为
   it('click items should change active and call the right callback', () => {
     const thirdItem = wrapper.getByText('xyz')
     fireEvent.click(thirdItem)
@@ -56,18 +67,8 @@ describe('test Menu and MenuItem component in default(horizontal) mode', () => {
     expect(disabledElement).not.toHaveClass('is-active')
     expect(testProps.onSelect).not.toHaveBeenCalledWith('1')
   })
-  it('should show dropdown items when hover on subMenu', async () => {
-    expect(wrapper.queryByText('drop1')).not.toBeVisible()
-    const dropdownElement = wrapper.getByText('dropdown')
-    fireEvent.mouseEnter(dropdownElement)
-    await wait(() => {
-      expect(wrapper.queryByText('drop1')).toBeVisible()
-    })
-    fireEvent.click(wrapper.getByText('drop1'))
-    expect(testProps.onSelect).toHaveBeenCalledWith('3-0')
-    fireEvent.mouseLeave(dropdownElement)
-    await wait(() => {
-      expect(wrapper.queryByText('drop1')).not.toBeVisible()
-    })
+
+  it('should show dropdown items when hover on subMenu', () => {
+
   })
 })

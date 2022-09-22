@@ -9,19 +9,21 @@
   vertical-align  : middle;
   background-image: none;
   border          : $btn-border-width solid transparent;
-  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $border-radius);
+  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $border-radius); //mixin混入复用
   box-shadow: $btn-box-shadow;
   cursor    : pointer;
   transition: $btn-transition;
 
+  //添加disabled属性样式  btn有disabled类名和disabled属性
   &.disabled,
   &[disabled] {
-    cursor    : not-allowed;
-    opacity   : $btn-disabled-opacity;
+    cursor : not-allowed; //禁用标志
+    opacity : $btn-disabled-opacity; //透明度
     box-shadow: none;
 
+    //通配符设置children
     >* {
-      pointer-events: none;
+      pointer-events: none; //不接受鼠标事件
     }
   }
 }
@@ -43,7 +45,7 @@
 }
 
 .btn-default {
-  @include button-style($white, $gray-400, $body-color, $white, $primary, $primary)
+  @include button-style($white, $gray-400, $body-color, $white, $primary, $primary) //加入自定义的属性
 }
 
 .btn-link {

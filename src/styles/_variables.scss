@@ -90,7 +90,7 @@ $h6-font-size: $font-size-base !default;
 // 链接
 $link-color           : $primary !default;
 $link-decoration      : none !default;
-$link-hover-color     : darken($link-color, 15%) !default;
+$link-hover-color : darken($link-color, 15%) !default; //sass自带函数，使其变暗
 $link-hover-decoration: underline !default;
 
 // body

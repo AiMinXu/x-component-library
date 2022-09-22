@@ -2,25 +2,26 @@ import React, { useContext } from 'react';
 import classNames from 'classnames';
 import { MenuContext } from './menu'
 
+//定义MenuItem的接口
 export interface MenuItemProps {
+  index: number; //必传项？
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
-  index: number;//index为必传条件参数
   children?: React.ReactNode
 }
 
 const MenuItem: React.FC<MenuItemProps> = (props) => {
-  const { children, index, style, className, disabled } = props
-  const context = useContext(MenuContext)
+  const { index, disabled, className, style, children } = props
+  const ctx = useContext(MenuContext)//获取context
   const classes = classNames('menu-item', className, {
     'is-disabled': disabled,
-    'is-active': context.index === index//设置高亮条件
+    'is-active': ctx.index === index//何时高亮
   })
   const handleClick = () => {
-    //设置调用回调函数条件
-    if (context.onSelect && !disabled) {
-      context.onSelect(index)
+    //点击事件回调函数，当onSelect有值且不是disabled执行回调
+    if (ctx.onSelect && !disabled) {
+      ctx.onSelect(index)
     }
   }
   return (
@@ -30,6 +31,4 @@ const MenuItem: React.FC<MenuItemProps> = (props) => {
   )
 }
 
-//添加静态属性
-MenuItem.displayName = 'MenuItem'
-export default MenuItem;
+export default MenuItem
